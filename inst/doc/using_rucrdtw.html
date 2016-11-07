@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Philipp Boersch-Supan" />
+
+<meta name="date" content="2016-10-23" />
+
+<title>Using rucrdtw</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Using rucrdtw</h1>
+<h4 class="author"><em>Philipp Boersch-Supan</em></h4>
+<h4 class="date"><em>2016-10-23</em></h4>
+
+
+
+<p><code>rucrdtw</code> provides R bindings for functions from the <a href="http://www.cs.ucr.edu/~eamonn/UCRsuite.html">UCR Suite</a> <span class="citation">(Rakthanmanon et al. 2012)</span>, which enables ultrafast subsequence search under both Dynamic Time Warping and Euclidean Distance.</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>Install <code>rucrdtw</code> from GitHub:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)
+devtools::<span class="kw">install_github</span>(<span class="st">&quot;pboesu/rucrdtw&quot;</span>)</code></pre></div>
+</div>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<p>Load <code>rucrdtw</code> package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;rucrdtw&quot;</span>)</code></pre></div>
+<p>create a random long time series</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
+rwalk &lt;-<span class="st"> </span><span class="kw">cumsum</span>(<span class="kw">runif</span>(<span class="fl">1e7</span>, <span class="dt">min =</span> -<span class="fl">0.5</span>, <span class="dt">max =</span> <span class="fl">0.5</span>))</code></pre></div>
+<p>Pick a random subsequence of 100 elements as a query</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qstart &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">length</span>(rwalk), <span class="dv">1</span>)
+qlength &lt;-<span class="st"> </span><span class="dv">100</span>
+query &lt;-<span class="st"> </span>rwalk[qstart:(qstart+qlength)]</code></pre></div>
+<p>Since both query and data are R vectors, we use the vector-vector methods for the search.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(dtw_search &lt;-<span class="st"> </span><span class="kw">ucrdtw_vv</span>(<span class="dt">data =</span> rwalk, <span class="dt">query =</span> query, <span class="dt">qlength =</span> qlength, <span class="dt">dtwwindow =</span> <span class="fl">0.05</span>))</code></pre></div>
+<pre><code>##    user  system elapsed 
+##    0.97    0.00    1.00</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(qstart, dtw_search$location)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(ed_search &lt;-<span class="st"> </span><span class="kw">ucred_vv</span>(<span class="dt">data =</span> rwalk, <span class="dt">query =</span> query, <span class="dt">qlength =</span> qlength))</code></pre></div>
+<pre><code>##    user  system elapsed 
+##    1.82    0.01    1.86</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">all.equal</span>(qstart, ed_search$location)</code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>And in a matter of seconds we have searched 10 million data points and rediscovered our query!</p>
+<p>Searching for an exact match, however, is somewhat artificial. The real power of the similarity search is finding structurally similar subsequences in complex sets of time series. To demonstarte this we load an example data set:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;synthetic_control&quot;</span>)</code></pre></div>
+<p>This data set contains 600 time series of length 60 from 6 classes <span class="citation">(Alcock et al. 1999)</span>. The data set documentation contains further information about these data. It can be displayed using the command <code>?synthetic_control</code>. We can plot an example of each class</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>),
+    <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))
+classes =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Normal&quot;</span>, <span class="st">&quot;Cyclic&quot;</span>, <span class="st">&quot;Increasing&quot;</span>, <span class="st">&quot;Decreasing&quot;</span>, <span class="st">&quot;Upward shift&quot;</span>, <span class="st">&quot;Downward shift&quot;</span>)
+for (i in <span class="dv">1</span>:<span class="dv">6</span>){
+  <span class="kw">plot</span>(synthetic_control[i*<span class="dv">100-99</span>,], <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">xaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">ylab=</span><span class="st">&quot;&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="dt">bty=</span><span class="st">&quot;n&quot;</span>, <span class="dt">main=</span>classes[i])
+}</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Since we are now comparing a query against a set of time series, we only need to do comparisons for non-overlapping data sequences. The vector-matrix methods <code>ucrdtw_vm</code> and <code>ucred_vm</code> provide this functionality.</p>
+<p>We can demonstrate this by removing a query from the data set, and then searching for a closest match:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">index &lt;-<span class="st"> </span><span class="dv">600</span>
+query &lt;-<span class="st"> </span>synthetic_control[index,]
+<span class="co">#microbenchmark::microbenchmark(</span>
+dtw_search =<span class="st"> </span><span class="kw">ucrdtw_vm</span>(synthetic_control[-index,], query, <span class="kw">length</span>(query), <span class="fl">0.05</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+ed_search =<span class="st"> </span><span class="kw">ucred_vm</span>(synthetic_control[-index,], query, <span class="kw">length</span>(query), <span class="dt">byrow=</span> <span class="ot">TRUE</span>)
+<span class="co">#times=50)</span></code></pre></div>
+<p>And plot the results:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(synthetic_control[dtw_search$location,], <span class="dt">type=</span><span class="st">&quot;l&quot;</span>, <span class="dt">ylim=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">55</span>), <span class="dt">ylab=</span><span class="st">&quot;&quot;</span>)
+<span class="kw">lines</span>(query, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)
+<span class="kw">lines</span>(synthetic_control[ed_search$location,], <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">lty=</span><span class="dv">3</span>, <span class="dt">lwd=</span><span class="dv">3</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;query&quot;</span>, <span class="st">&quot;DTW match&quot;</span>, <span class="st">&quot;ED match&quot;</span>), <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;blue&quot;</span>), <span class="dt">lty=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>), <span class="dt">bty=</span><span class="st">&quot;n&quot;</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-alcock1999time">
+<p>Alcock, R. J., Y. Manolopoulos, Data Engineering Laboratory, and Department Of Informatics. 1999. “Time-Series Similarity Queries Employing a Feature-Based Approach.” In <em>In 7 Th Hellenic Conference on Informatics, Ioannina</em>, 27–29.</p>
+</div>
+<div id="ref-rakthanmanon2012searching">
+<p>Rakthanmanon, Thanawin, Bilson Campana, Abdullah Mueen, Gustavo Batista, Brandon Westover, Qiang Zhu, Jesin Zakaria, and Eamonn Keogh. 2012. “Searching and Mining Trillions of Time Series Subsequences Under Dynamic Time Warping.” In <em>Proceedings of the 18th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining</em>, 262–70. ACM. doi:<a href="https://doi.org/10.1145/2339530.2339576">10.1145/2339530.2339576</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
