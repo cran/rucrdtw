@@ -1,6 +1,6 @@
-e016956728e29cf515789c0b3912947f *DESCRIPTION
+439a5a611578e554cf44e7dd532caedb *DESCRIPTION
 009646cdbefc0cac26d73d3e4f414135 *NAMESPACE
-307f481302657324e3ea0258976de298 *NEWS.md
+324d3781d20db598445131e2aaa66146 *NEWS.md
 a1e450d469b08db846121b8d65a3b253 *R/RcppExports.R
 6744c803ae5bc59fc213a3572841eb77 *R/data_doc.R
 4bbe66d4d6972cc665ebc57999dad740 *R/rucrdtw-package.r
@@ -12,7 +12,7 @@ bef098c2585b30c847d5af6c49b7e231 *README.md
 34c78919e12a5b62ceaa0045aa2f51e7 *inst/CITATION
 0e45f9584b310bc078695f130e556052 *inst/doc/using_rucrdtw.R
 23455d8d4090dd30570817fee98a8838 *inst/doc/using_rucrdtw.Rmd
-6b54f116a6a6f28583261c128cad9964 *inst/doc/using_rucrdtw.html
+97969360e6390df0db954801126d340b *inst/doc/using_rucrdtw.html
 dfce942e7ad3250be80933bd02db7c99 *inst/extdata/col_sc.txt
 f410bbeeee5c018e0b838795848d81a7 *inst/extdata/first_sc.txt
 a2058ca996efe02b966931ddc99a4098 *inst/extdata/last_sc.txt
@@ -32,7 +32,7 @@ f5e3401d5621a866eb4c411992d594d4 *man/ucrdtw_vv.Rd
 e3c49d09475915f3c995b7217591d046 *man/ucred_fv.Rd
 91f7614b5766b8d31e6d76c973a9bdd0 *man/ucred_mv.Rd
 44c890558a00c2b3bf7324d2f7dcf407 *man/ucred_vv.Rd
-3ce1a26a003a513ee249265d771a4791 *src/RcppExports.cpp
+403df3e742587b2e1ac7c5508b041463 *src/RcppExports.cpp
 93f7a02d0e6db71bdb0cb90c81db1572 *src/dtw_functions.cpp
 62d295e422e4b39c4a140fb1a4411f8c *src/ed_functions.cpp
 c90370d855c8b623d926c3e32c12fd1c *tests/testthat.R
